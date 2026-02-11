@@ -1,1 +1,141 @@
-# Publishing
+# Publishing Guide
+
+This project uses the [Vanniktech Maven Publish plugin](https://github.com/vanniktech/gradle-maven-publish-plugin) to deploy artifacts to Maven Central.
+
+---
+
+## Publishing via CI (Recommended)
+
+The recommended way to publish is via the GitHub Actions workflow. This ensures consistent, auditable releases.
+
+> **Note:** Only the repository owner can trigger the release workflow.
+
+### One-time Setup
+
+Add these secrets to your repository (Settings → Secrets and variables → Actions):
+
+| Secret | Description |
+|--------|-------------|
+| `MAVEN_CENTRAL_USERNAME` | Maven Central Portal username |
+| `MAVEN_CENTRAL_PASSWORD` | Maven Central Portal token |
+| `SIGNING_KEY` | GPG private key (ASCII-armored, headers/newlines stripped) |
+| `SIGNING_KEY_PASSWORD` | GPG key passphrase |
+
+To get your `KEY_ID`:
+```bash
+gpg --list-secret-keys --keyid-format LONG
+```
+
+You'll see output like this:
+-----------------------------
+```bash
+  sec   rsa4096/ABC123DEF4567890 2024-01-15 [SC]
+        ABCD1234EFGH5678IJKL9012MNOP3456QRST7890
+  uid                 [ultimate] Your Name <your@email.com>
+  ssb   rsa4096/XYZ789ABC1234567 2024-01-15 [E]
+
+  The key ID is the part after the slash on the sec line:
+
+  sec   rsa4096/ABC123DEF4567890 2024-01-15 [SC]
+                ^^^^^^^^^^^^^^^^
+                This is your KEY_ID
+```
+
+To generate `SIGNING_KEY`:
+```bash
+gpg --export-secret-keys --armor YOUR_KEY_ID | grep -v '\-\-' | grep -v '^=.' | tr -d '\n'
+```
+
+This command:
+- Exports the key in ASCII-armored format
+- Strips the `-----BEGIN/END PGP PRIVATE KEY BLOCK-----` header/footer lines
+- Strips the checksum line (starts with `=`)
+- Removes all newlines to create a single-line string
+
+### Release Steps
+
+1. Go to **Actions** → **Release** workflow
+2. Click **Run workflow**
+3. Enter the version (e.g., `0.1.0` or `0.1.0-SNAPSHOT`)
+4. Click **Run workflow**
+
+The workflow will:
+- Run all checks (tests, lint, detekt, spotless)
+- Publish to Maven Central
+- Create a git tag and GitHub Release (for non-SNAPSHOT versions)
+- Auto-generate release notes from merged PRs
+
+### SNAPSHOT vs Release
+
+| Version | Example | Behavior |
+|---------|---------|----------|
+| SNAPSHOT | `0.1.0-SNAPSHOT` | Publishes to snapshots repo, no tag/release created |
+| Release | `0.1.0`, `0.1.0-beta01` | Publishes and closes staging, creates tag and GitHub Release |
+
+---
+
+## Publishing Locally
+
+Use local publishing only when needed (e.g., testing the publish process, debugging issues).
+
+### Prerequisites
+
+Add credentials to `~/.gradle/gradle.properties` (not the project's):
+
+```properties
+mavenCentralUsername=YOUR_MAVEN_CENTRAL_USERNAME
+mavenCentralPassword=YOUR_MAVEN_CENTRAL_PASSWORD
+
+# File-based signing (recommended for local)
+signing.keyId=LAST_8_CHARS_OF_KEY_ID
+signing.password=YOUR_KEY_PASSPHRASE
+signing.secretKeyRingFile=~/.gradle/secring.gpg
+```
+
+To export your GPG key:
+```bash
+# Find your key ID
+gpg --list-secret-keys --keyid-format SHORT
+
+# Export to file
+gpg --export-secret-keys YOUR_KEY_ID > ~/.gradle/secring.gpg
+```
+
+### Local Release Steps
+
+1. **Run checks**
+   ```bash
+   ./gradlew clean check
+   ```
+
+2. **Test locally (optional)**
+   ```bash
+   ./gradlew publishToMavenLocal
+   ```
+   Check `~/.m2/repository/com/ms-square/...` for generated artifacts.
+
+   > **Note:** This does not require Maven Central credentials or GPG signing.
+
+3. **Publish to Maven Central**
+   ```bash
+   ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=0.1.0
+   ```
+   > **Note:** The version override keeps `gradle.properties` unchanged, matching how CI handles versioning.
+
+4. **Create tag and GitHub Release manually**
+   ```bash
+   git tag -a v0.1.0 -m "Release 0.1.0"
+   git push origin v0.1.0
+   ```
+   Then create the GitHub Release from the repository's Releases page.
+
+---
+
+## Verify Release
+
+After publishing, verify artifacts appear on Maven Central:
+- Search is typically available within **15-30 minutes**
+- Full CDN propagation may take **up to 4 hours**
+
+Artifact URL:
+- <https://central.sonatype.com/artifact/com.ms-square/aether>
