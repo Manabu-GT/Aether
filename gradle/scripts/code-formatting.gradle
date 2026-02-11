@@ -1,0 +1,42 @@
+apply plugin: 'com.diffplug.spotless'
+
+spotless {
+
+    kotlin {
+        target("**/*.kt")
+        targetExclude("**/build/**", "**/.gradle/**", "**/generated/**", "**/buildSrc/build/**")
+        ktlint("1.7.1")
+    }
+
+    kotlinGradle {
+        target("**/*.gradle.kts")
+        targetExclude("**/build/**", "**/.gradle/**")
+        ktlint("1.7.1")
+    }
+
+    format("xml") {
+        target("**/*.xml")
+        targetExclude("**/build/**", "**/.gradle/**", "**/.idea/**")
+        trimTrailingWhitespace()
+        endWithNewline()
+        leadingTabsToSpaces(2)
+    }
+
+    format("markdown") {
+        target("**/*.md")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    format("configFiles") {
+        target("**/*.yml", "**/*.yaml", "**/*.json", ".editorconfig")
+        targetExclude("**/build/**", "**/.gradle/**")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    format("misc") {
+        target("**/.gitignore")
+        trimTrailingWhitespace()
+    }
+}

@@ -1,0 +1,85 @@
+[versions]
+# Plugins
+agp = "8.13.2"
+maven-publish = "0.36.0"
+spotless = "8.2.1"
+detekt = "1.23.8"
+mapsecrets = "2.0.1"
+
+# Android
+androidMinSdk = "26"
+androidCompileSdk = "36"
+androidTargetSdk = "36"
+
+# Kotlin
+kotlin = "2.2.21"
+
+# Google
+androidx-core = "1.17.0"
+androidx-annotation = "1.9.1"
+androidx-lifecycle = "2.10.0"
+material = "1.13.0"
+
+# Google - Compose
+activityCompose = "1.12.3"
+composeBom = "2025.11.00"
+lifecycleViewmodelCompose = "2.10.0"
+mapsCompose = "8.1.0"
+
+# Other
+kotlinx-coroutines = "1.10.2"
+debugoverlay = "2.1.0"
+
+# Testing
+junit4 = "4.13.2"
+truth = "1.4.5"
+mockk = "1.14.9"
+robolectric = "4.16.1"
+
+[libraries]
+# Google
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+# Lifecycle
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+
+# Compose
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
+
+# Coroutines
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+
+# Other
+debugoverlay = { module = "com.ms-square:debugoverlay", version.ref = "debugoverlay" }
+
+# Testing
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
+mapsSecrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsecrets" }
