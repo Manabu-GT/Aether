@@ -16,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,22 +49,30 @@ import com.ms.square.aether.weather.Rain
 import com.ms.square.aether.weather.Snow
 import kotlinx.coroutines.launch
 
-private val tokyo = LatLng(35.6812, 139.7671)
-private const val DEFAULT_ZOOM = 12f
+private val TOKYO = LatLng(35.6812, 139.7671)
+private const val DEFAULT_ZOOM = 14f
 
-// Google Maps standard dark/night style
+// Google Maps official Night Mode style
+// https://developers.google.com/maps/documentation/javascript/examples/style-array
 private const val DARK_MAP_STYLE = """[
-  {"elementType":"geometry","stylers":[{"color":"#212121"}]},
-  {"elementType":"labels.text.fill","stylers":[{"color":"#757575"}]},
-  {"elementType":"labels.text.stroke","stylers":[{"color":"#212121"}]},
-  {"featureType":"administrative","elementType":"geometry","stylers":[{"color":"#757575"}]},
-  {"featureType":"poi","elementType":"geometry","stylers":[{"color":"#181818"}]},
-  {"featureType":"road","elementType":"geometry.fill","stylers":[{"color":"#2c2c2c"}]},
-  {"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#212121"}]},
-  {"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#3c3c3c"}]},
+  {"elementType":"geometry","stylers":[{"color":"#242f3e"}]},
+  {"elementType":"labels.text.stroke","stylers":[{"color":"#242f3e"}]},
+  {"elementType":"labels.text.fill","stylers":[{"color":"#746855"}]},
+  {"featureType":"administrative.locality","elementType":"labels.text.fill","stylers":[{"color":"#d59563"}]},
+  {"featureType":"poi","elementType":"labels.text.fill","stylers":[{"color":"#d59563"}]},
+  {"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#263c3f"}]},
+  {"featureType":"poi.park","elementType":"labels.text.fill","stylers":[{"color":"#6b9a76"}]},
+  {"featureType":"road","elementType":"geometry","stylers":[{"color":"#38414e"}]},
+  {"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#212a37"}]},
+  {"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#9ca5b3"}]},
+  {"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#746855"}]},
+  {"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#1f2835"}]},
+  {"featureType":"road.highway","elementType":"labels.text.fill","stylers":[{"color":"#f3d19c"}]},
   {"featureType":"transit","elementType":"geometry","stylers":[{"color":"#2f3948"}]},
-  {"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"}]},
-  {"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#3d3d3d"}]}
+  {"featureType":"transit.station","elementType":"labels.text.fill","stylers":[{"color":"#d59563"}]},
+  {"featureType":"water","elementType":"geometry","stylers":[{"color":"#17263c"}]},
+  {"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#515c6d"}]},
+  {"featureType":"water","elementType":"labels.text.stroke","stylers":[{"color":"#17263c"}]}
 ]"""
 
 private enum class MapStyle(val label: String) {
@@ -86,9 +95,9 @@ fun MapShowcase(contentPadding: PaddingValues = PaddingValues()) {
   var lightningEnabled by remember { mutableStateOf(false) }
 
   // Default effects — halos provide contrast on any map style, no custom colors needed
-  val rain = remember { Rain(intensity = 2) }
-  val snow = remember { Snow(density = 3) }
-  val clouds = remember { Clouds(coverage = 0.45f) }
+  val rain = remember { Rain.moderate() }
+  val snow = remember { Snow.light() }
+  val clouds = remember { Clouds.partlyCloudy() }
   val lightning = remember { LightningFlash(progress = 0f) }
 
   val currentEffect: AetherEffect = when (selectedWeather) {
@@ -98,7 +107,7 @@ fun MapShowcase(contentPadding: PaddingValues = PaddingValues()) {
   }
 
   val cameraPositionState = rememberCameraPositionState {
-    position = CameraPosition.fromLatLngZoom(tokyo, DEFAULT_ZOOM)
+    position = CameraPosition.fromLatLngZoom(TOKYO, DEFAULT_ZOOM)
   }
 
   Box(modifier = Modifier.fillMaxSize()) {
@@ -172,7 +181,9 @@ fun MapShowcase(contentPadding: PaddingValues = PaddingValues()) {
           }
         }
 
-        // Effect selector — weather + lightning toggle
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+        // Weather + lightning selector
         Row(
           horizontalArrangement = Arrangement.spacedBy(8.dp),
           modifier = Modifier.fillMaxWidth()
@@ -198,14 +209,14 @@ fun MapShowcase(contentPadding: PaddingValues = PaddingValues()) {
           WeatherType.CLOUDS -> MapCloudsControls(clouds)
         }
 
-        if (lightningEnabled) {
-          val scope = rememberCoroutineScope()
-          Button(
-            onClick = { scope.launch { lightning.flash() } },
-            modifier = Modifier.fillMaxWidth()
-          ) {
-            Text("Trigger Flash")
-          }
+        // Lightning trigger — always visible, disabled when lightning is off
+        val scope = rememberCoroutineScope()
+        Button(
+          onClick = { scope.launch { lightning.flash() } },
+          enabled = lightningEnabled,
+          modifier = Modifier.fillMaxWidth()
+        ) {
+          Text("Trigger Flash")
         }
       }
     }
