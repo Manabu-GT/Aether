@@ -9,6 +9,7 @@ plugins {
   alias(libs.plugins.mavenPublish) apply false
   alias(libs.plugins.detekt) apply false
   alias(libs.plugins.mapsSecrets) apply false
+  alias(libs.plugins.screenshot) apply false
   alias(libs.plugins.spotless)
 }
 

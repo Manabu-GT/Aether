@@ -3,6 +3,7 @@
 agp = "8.13.2"
 bcv = "0.18.1"
 maven-publish = "0.36.0"
+screenshot = "0.0.1-alpha13"
 spotless = "8.2.1"
 detekt = "1.23.8"
 mapsecrets = "2.0.1"
@@ -43,6 +44,7 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
@@ -54,6 +56,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 debugoverlay = { module = "com.ms-square:debugoverlay", version.ref = "debugoverlay" }
 
 # Testing
+screenshot-validation-api = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
@@ -70,3 +73,4 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 mapsSecrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsecrets" }
+screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot" }
