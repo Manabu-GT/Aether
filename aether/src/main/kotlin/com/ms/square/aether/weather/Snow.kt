@@ -244,7 +244,7 @@ public class Snow(
         float3 col = snowColor.rgb * coreA + haloColor.rgb * haloA * (1.0 - coreA);
         float alpha = coreA + haloA * (1.0 - coreA);
         if (alpha < 0.001) return half4(0.0);
-        return half4(col / alpha, alpha);
+        return half4(col, alpha);
       }
     """
   }
