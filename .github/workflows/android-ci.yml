@@ -33,5 +33,16 @@ jobs:
       - name: Run checks
         run: ./gradlew check --continue --stacktrace
 
+      - name: Screenshot test (verify)
+        run: ./gradlew :aether:validateDebugScreenshotTest --stacktrace
+
+      - name: Upload screenshot diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-diff-report
+          path: aether/build/reports/screenshotTest/
+          retention-days: 14
+
       - name: Build Project
         run: ./gradlew :sample:assembleDebug --stacktrace

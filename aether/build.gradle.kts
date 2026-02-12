@@ -4,6 +4,7 @@ plugins {
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.bcv)
   alias(libs.plugins.mavenPublish)
+  alias(libs.plugins.screenshot)
 }
 
 java {
@@ -27,6 +28,8 @@ android {
   testOptions {
     targetSdk = libs.versions.androidTargetSdk.get().toInt()
   }
+
+  experimentalProperties["android.experimental.enableScreenshotTest"] = true
 
   buildTypes {
     release {
@@ -52,4 +55,7 @@ dependencies {
   testImplementation(libs.truth)
   testImplementation(libs.mockk)
   testImplementation(libs.kotlinx.coroutines.test)
+
+  screenshotTestImplementation(libs.screenshot.validation.api)
+  screenshotTestImplementation(libs.androidx.ui.tooling)
 }
