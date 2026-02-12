@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 0.1.2 *(2026-02-11)*
+
+### Improved
+
+* **Clouds** – Smoother, more natural drift with varying speed instead of constant
+* **Clouds** – Near and far cloud layers now drift in slightly different directions for more depth
+
+### Fixed
+
+* **Clouds** – Fixed semi-transparent edges appearing darker than expected
+
 ## Version 0.1.1 *(2026-02-11)*
 
 ### Improved

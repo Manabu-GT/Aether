@@ -103,7 +103,7 @@ public class Clouds(coverage: Float = DEFAULT_COVERAGE, speed: Float = 1.0f, col
         if (resolution.x < 1.0 || resolution.y < 1.0) return half4(0.0);
         float2 uv = fragCoord / resolution;
 
-        float t = mod(time, 600.0) * speed * 0.15;
+        float t = mod(time, 1800.0) * speed * 0.05;
 
         // Coherent wind direction for natural drift
         float2 wind = float2(1.0, 0.3);
@@ -115,10 +115,15 @@ public class Clouds(coverage: Float = DEFAULT_COVERAGE, speed: Float = 1.0f, col
         // At coverage=0.8: threshold ~0.22 (overcast, nearly full coverage)
         float threshold = mix(0.65, 0.15, coverage);
 
+        // Organic drift: sinusoidal speed variation simulates wind gusts
+        float gustT = t + sin(t * 0.12) * 2.5;
+        // Slow perpendicular drift for internal churning
+        float2 drift = float2(-wind.y, wind.x) * sin(t * 0.7) * 0.08;
+
         // Near cloud layer: lower frequency, faster drift, domain-warped for natural shapes
-        float n1 = fbm(uv * 5.0 + wind * t);
+        float n1 = fbm(uv * 5.0 + wind * gustT + drift);
         float2 warp = float2(n1, n1 * 0.8) * 0.45;
-        float n2 = fbm(uv * 3.5 + warp + wind * t * 0.6 + 50.0);
+        float n2 = fbm(uv * 3.5 + warp + wind * gustT * 0.6 - drift * 0.5 + 50.0);
         float nearRaw = (n1 + n2) * 0.5;
 
         // Shape near cloud: threshold sets where clouds begin, fixed-width soft edge
@@ -126,7 +131,7 @@ public class Clouds(coverage: Float = DEFAULT_COVERAGE, speed: Float = 1.0f, col
         float nearCloud = smoothstep(threshold, threshold + edgeSoft, nearRaw);
 
         // Far cloud layer: higher frequency, slower drift, adds depth/detail
-        float n3 = fbm(uv * 8.0 + wind * t * 0.35 + 100.0);
+        float n3 = fbm(uv * 8.0 + wind * gustT * 0.35 + drift * 1.5 + 100.0);
         float farThreshold = threshold + 0.05; // far clouds slightly sparser
         float farCloud = smoothstep(farThreshold, farThreshold + edgeSoft, n3);
 
@@ -157,7 +162,7 @@ public class Clouds(coverage: Float = DEFAULT_COVERAGE, speed: Float = 1.0f, col
         float alphaBoost = cloud * (1.0 + cloud * 0.3); // denser clouds get up to 30% more opacity
         float alpha = cloudColor.a * clamp(alphaBoost, 0.0, 1.0);
 
-        return half4(finalColor, alpha);
+        return half4(finalColor * alpha, alpha);
       }
     """
   }
