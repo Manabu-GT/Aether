@@ -125,8 +125,10 @@ Suggest how to test the implementation:
 ## Project-Specific Context
 
 When working in this codebase:
-- Follow the module structure defined in AGENTS.md (`debugoverlay-core`, `debugoverlay`, `debugoverlay-extension-okhttp`, `debugoverlay-extension-timber`, `sample`).
+- Follow the module structure: `aether/` (single library module) and `sample/` (showcase app).
+- Packages: `core` (public API), `core.internal` (shader cache, modifier node, environment), `weather` (Rain, Snow, Clouds, LightningFlash).
+- Effect properties are backed by Compose Snapshot state (`mutableStateOf` / `mutableFloatStateOf` / `mutableIntStateOf`).
+- Modifier implementation uses `Modifier.Node` + `ModifierNodeElement`, not `composed {}`.
 - Use the version catalog at `gradle/libs.versions.toml` for dependencies.
 - Maintain Java 21 toolchain compatibility.
-- Preserve resource prefixes (`debugoverlay_`) in library modules.
 - Keep all modules on AndroidX APIs; do not introduce legacy `android.support` imports.
