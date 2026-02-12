@@ -70,6 +70,7 @@ val rain = remember {
         intensity = 3,       // 1–5 layers
         speed = 1.0f,        // fall speed multiplier
         dropLength = 1.0f,   // streak length multiplier
+        colors = RainColors(),  // core, halo, and atmospheric tint
         wind = Wind.LightBreeze
     )
 }
