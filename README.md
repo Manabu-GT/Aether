@@ -31,7 +31,7 @@ Add to your version catalog (`libs.versions.toml`):
 
 ```toml
 [versions]
-aether = "0.1.0"
+aether = "0.1.2"
 
 [libraries]
 aether = { module = "com.ms-square:aether", version.ref = "aether" }
