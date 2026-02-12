@@ -37,25 +37,14 @@ dependencies {
   implementation(projects.aether)
   debugImplementation(libs.debugoverlay)
 
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.material)
-
-  // Lifecycle
-  implementation(libs.androidx.lifecycle.runtime.ktx)
-
   // Compose
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.ui)
   implementation(libs.androidx.ui.graphics)
   implementation(libs.androidx.material3)
   implementation(libs.androidx.compose.material.icons.extended)
-  implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.activity.compose)
   implementation(libs.maps.compose)
-
-  debugImplementation(libs.androidx.compose.ui.tooling)
-
-  testImplementation(libs.junit4)
 }
 
 secrets {
