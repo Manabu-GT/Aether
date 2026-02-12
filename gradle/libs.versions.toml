@@ -33,7 +33,6 @@ junit4 = "4.13.2"
 truth = "1.4.5"
 mockk = "1.14.9"
 robolectric = "4.16.1"
-coreKtx = "1.17.0"
 
 [libraries]
 # Google
@@ -63,7 +62,6 @@ truth = { module = "com.google.truth:truth", version.ref = "truth" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
