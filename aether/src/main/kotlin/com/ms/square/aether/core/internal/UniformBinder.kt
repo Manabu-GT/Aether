@@ -3,6 +3,7 @@ package com.ms.square.aether.core.internal
 import android.graphics.RuntimeShader
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.graphics.toArgb
 import com.ms.square.aether.core.UniformValue
 
 /**
@@ -18,10 +19,7 @@ internal object UniformBinder {
       is UniformValue.Float2 -> shader.setFloatUniform(name, value.x, value.y)
       is UniformValue.Float3 -> shader.setFloatUniform(name, value.x, value.y, value.z)
       is UniformValue.Float4 -> shader.setFloatUniform(name, value.x, value.y, value.z, value.w)
-      is UniformValue.ColorValue -> {
-        val color = value.color
-        shader.setFloatUniform(name, color.red, color.green, color.blue, color.alpha)
-      }
+      is UniformValue.ColorValue -> shader.setColorUniform(name, value.color.toArgb())
       is UniformValue.Int1 -> shader.setIntUniform(name, value.v)
     }
   }

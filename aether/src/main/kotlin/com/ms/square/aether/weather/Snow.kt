@@ -88,8 +88,8 @@ public class Snow(
       uniform int    density;
       uniform float  speed;
       uniform float  flakeSize;
-      uniform float4 snowColor;
-      uniform float4 haloColor;
+      layout(color) uniform half4 snowColor;
+      layout(color) uniform half4 haloColor;
       uniform float  windStrength;
 
       // Hash function by Dave Hoskins, MIT License

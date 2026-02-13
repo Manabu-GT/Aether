@@ -86,7 +86,7 @@ public class LightningFlash(
       uniform float  brightness;
       uniform int    boltCount;
       uniform float  forkIntensity;
-      uniform float4 flashColor;
+      layout(color) uniform half4 flashColor;
 
       // Hash function by Dave Hoskins, MIT License
       // https://www.shadertoy.com/view/4djSRW

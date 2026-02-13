@@ -80,9 +80,9 @@ public class Rain(
       uniform int    intensity;
       uniform float  speed;
       uniform float  dropLength;
-      uniform float4 rainColor;
-      uniform float4 haloColor;
-      uniform float4 tintColor;
+      layout(color) uniform half4 rainColor;
+      layout(color) uniform half4 haloColor;
+      layout(color) uniform half4 tintColor;
       uniform float  windAngle;
 
       // Hash function by Dave Hoskins, MIT License
