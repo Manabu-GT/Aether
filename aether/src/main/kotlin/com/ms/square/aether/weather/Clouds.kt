@@ -56,7 +56,7 @@ public class Clouds(coverage: Float = DEFAULT_COVERAGE, speed: Float = 1.0f, col
       uniform float  time;
       uniform float  coverage;
       uniform float  speed;
-      uniform float4 cloudColor;
+      layout(color) uniform half4 cloudColor;
 
       // Hash function by Dave Hoskins, MIT License
       // https://www.shadertoy.com/view/4djSRW
